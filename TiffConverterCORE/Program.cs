@@ -26,6 +26,8 @@ namespace TestingTIFFtoKMZ
 
             Gdal.wrapper_GDALTranslate(filenameKMZ, vrtDataset, transOptions1, null, null);
 
+            // coding 
+
 
         }
     }
