@@ -12,6 +12,11 @@ namespace TestingTIFFtoKMZ
     {
         static void Main(string[] args)
         {
+
+            // GdalConfiguration.ConfigureGdal();
+            // https://stackoverflow.com/questions/55386597/gdal-c-sharp-wrapper-for-vrt-doesnt-write-a-vrt-file
+
+
             string outputName = Environment.CurrentDirectory + @"\BR01899_Mackenzie_09_EXPORT";
             string vrtfile = outputName + @"\tempMosaic.vrt";
             string filenameKMZ = outputName + @"\" + Environment.CurrentDirectory + ".kmz";
@@ -19,16 +24,14 @@ namespace TestingTIFFtoKMZ
 
             var vrtOptions = new GDALBuildVRTOptions(new[] { "-overwrite" });
             
+            GDALTranslateOptions transOptions = new GDALTranslateOptions(new[] { "-of", "KMLSUPEROVERLAY", "-co", "format=png" });
 
-            GDALTranslateOptions transOptions1 = new GDALTranslateOptions(new[] { "-of", "KMLSUPEROVERLAY", "-co", "format=png" });
+            Dataset vrtDataset = Gdal.wrapper_GDALBuildVRT_names(vrtfile, tiffFiles, vrtOptions, null, null);
+            // vrtDataset.Dispose();
 
-            var vrtDataset = Gdal.wrapper_GDALBuildVRT_names(vrtfile, tiffFiles, vrtOptions, null, null);
+            Gdal.wrapper_GDALTranslate(filenameKMZ, vrtDataset, transOptions, null, null);
 
-            Gdal.wrapper_GDALTranslate(filenameKMZ, vrtDataset, transOptions1, null, null);
-
-            // coding 
-
-
+            
         }
     }
 }
