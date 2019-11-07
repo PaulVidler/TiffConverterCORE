@@ -1,13 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OSGeo.GDAL;
 
-namespace TestingTIFFtoKMZ
+namespace GDALTranslate
 {
+    public class Translate
+    {
+        public string OutputName { get; set; }
+        public string VrtFile { get; set; }
+        public string KMZFileName { get; set; }
+        public string[] TiffFiles { get; set; }
+
+        public string TIFFDirectory { get; set; }
+        public string OutputDirectory { get; set; }
+
+        private GDALBuildVRTOptions _vRTOptions;
+
+        public GDALBuildVRTOptions VRTOptions
+        {
+            get { return VRTOptions; }
+            private set { _vRTOptions = new GDALBuildVRTOptions(new[] { "-overwrite" }); }
+        }
+
+        public
+
+        
+
+    }
     class Program
     {
         static void Main(string[] args)
@@ -25,7 +44,7 @@ namespace TestingTIFFtoKMZ
             Gdal.AllRegister();
 
             var vrtOptions = new GDALBuildVRTOptions(new[] { "-overwrite" });
-            
+
             GDALTranslateOptions transOptions = new GDALTranslateOptions(new[] { "-of", "KMLSUPEROVERLAY", "-co", "format=png" });
 
             Dataset vrtDataset = Gdal.wrapper_GDALBuildVRT_names(vrtfile, tiffFiles, vrtOptions, null, null);
@@ -35,4 +54,6 @@ namespace TestingTIFFtoKMZ
 
         }
     }
+
+
 }
