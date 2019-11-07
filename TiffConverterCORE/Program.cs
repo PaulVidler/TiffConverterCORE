@@ -19,8 +19,10 @@ namespace TestingTIFFtoKMZ
 
             string outputName = Environment.CurrentDirectory + @"\BR01899_Mackenzie_09_EXPORT";
             string vrtfile = outputName + @"\tempMosaic.vrt";
-            string filenameKMZ = outputName + @"\" + Environment.CurrentDirectory + ".kmz";
+            string filenameKMZ = outputName + @"\test.kmz";
             string[] tiffFiles = Directory.GetFiles(outputName, "*.tif");
+
+            Gdal.AllRegister();
 
             var vrtOptions = new GDALBuildVRTOptions(new[] { "-overwrite" });
             
