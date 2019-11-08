@@ -13,12 +13,12 @@ namespace GDALTranslate
         public string TIFFDirectory { get; set; }
         // public string OutputDirectory { get; set; }
 
-        private GDALBuildVRTOptions _vRTOptions;
+        private GDALBuildVRTOptions _vRTOptions = new GDALBuildVRTOptions(new[] { "-overwrite" });
 
         public GDALBuildVRTOptions VRTOptions
         {
-            get { return VRTOptions; }
-            private set { _vRTOptions = new GDALBuildVRTOptions(new[] { "-overwrite" }); }
+            get { return new GDALBuildVRTOptions(new[] { "-overwrite" }); }
+            private set { _vRTOptions = VRTOptions; }
         }
 
         private GDALTranslateOptions _translateOptions;
@@ -31,25 +31,31 @@ namespace GDALTranslate
         private Dataset _vrtDataset;
         public Dataset VRTDataset
         {
-            get { return VRTDataset; }
-            private set { _vrtDataset = Gdal.wrapper_GDALBuildVRT_names(VrtFile, TiffFiles, VRTOptions, null, null); }
+            get { return VRTMethod(); }
+            private set { _vrtDataset = VRTMethod(); }
         }
 
         public TcTranslate(string KMZName, string inputDir, string outputDir)
         {
+            Gdal.AllRegister();
             OutputDirName = outputDir;
             KMZFileName = KMZName;
             TIFFDirectory = outputDir;
             _vrtDataset = VRTDataset;
         }
 
+        public Dataset VRTMethod()
+        {
+            Gdal.AllRegister();
+            return Gdal.wrapper_GDALBuildVRT_names(VrtFile, TiffFiles, VRTOptions, null, null);
+        }
+
         public void TranslateMethod()
         {
+            VRTMethod();
             Gdal.wrapper_GDALTranslate(KMZFileName, VRTDataset, TranslateOptions, null, null);
         }
 
     }
-    
-
 
 }

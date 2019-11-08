@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GDALTranslate;
 using OSGeo.GDAL;
 
 namespace TestingTIFFtoKMZ
@@ -12,27 +13,52 @@ namespace TestingTIFFtoKMZ
     {
         static void Main(string[] args)
         {
-
-            // GdalConfiguration.ConfigureGdal();
-            // https://stackoverflow.com/questions/55386597/gdal-c-sharp-wrapper-for-vrt-doesnt-write-a-vrt-file
-
-
-            string outputName = Environment.CurrentDirectory + @"\BR01899_Mackenzie_09_EXPORT";
-            string vrtfile = outputName + @"\tempMosaic.vrt";
-            string filenameKMZ = outputName + @"\test.kmz";
-            string[] tiffFiles = Directory.GetFiles(outputName, "*.tif");
-
             Gdal.AllRegister();
 
-            var vrtOptions = new GDALBuildVRTOptions(new[] { "-overwrite" });
+            TcTranslate test = new TcTranslate("test.kmz", @"C:\Users\relia\Documents\GitHub\TiffConverterCORE\TiffConverterCORE\BR01899_Mackenzie_09_EXPORT\", Environment.CurrentDirectory);
             
-            GDALTranslateOptions transOptions = new GDALTranslateOptions(new[] { "-of", "KMLSUPEROVERLAY", "-co", "format=png" });
+            test.TranslateMethod();
 
-            Dataset vrtDataset = Gdal.wrapper_GDALBuildVRT_names(vrtfile, tiffFiles, vrtOptions, null, null);
-            // vrtDataset.Dispose();
 
-            Gdal.wrapper_GDALTranslate(filenameKMZ, vrtDataset, transOptions, null, null);
+
+
+
+            //public TcTranslate(string KMZName, string inputDir, string outputDir)
+            //{
+            //    OutputDirName = outputDir;
+            //    KMZFileName = KMZName;
+            //    TIFFDirectory = outputDir;
+            //    _vrtDataset = VRTDataset;
+            //}
+
+            //public void TranslateMethod()
+            //{
+            //    Gdal.wrapper_GDALTranslate(KMZFileName, VRTDataset, TranslateOptions, null, null);
+            //}
+
 
         }
     }
 }
+
+
+//// GdalConfiguration.ConfigureGdal();
+//// https://stackoverflow.com/questions/55386597/gdal-c-sharp-wrapper-for-vrt-doesnt-write-a-vrt-file
+
+
+//string outputName = Environment.CurrentDirectory + @"\BR01899_Mackenzie_09_EXPORT";
+//string vrtfile = outputName + @"\tempMosaic.vrt";
+//string filenameKMZ = outputName + @"\test.kmz";
+//string[] tiffFiles = Directory.GetFiles(outputName, "*.tif");
+
+//Gdal.AllRegister();
+
+//            var vrtOptions = new GDALBuildVRTOptions(new[] { "-overwrite" });
+
+//GDALTranslateOptions transOptions = new GDALTranslateOptions(new[] { "-of", "KMLSUPEROVERLAY", "-co", "format=png" });
+
+//Dataset vrtDataset = Gdal.wrapper_GDALBuildVRT_names(vrtfile, tiffFiles, vrtOptions, null, null);
+//// vrtDataset.Dispose();
+
+//Gdal.wrapper_GDALTranslate(filenameKMZ, vrtDataset, transOptions, null, null);
+
